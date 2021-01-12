@@ -46,19 +46,14 @@ proc InterfaceToIPv4AddressWindows {name} {
                         set skipBlankLine 0
                 }
         }
-        if { $InterfaceFound == 0} {
 
-                # -1 means interface with the given name is not present
-                return -1
-        } elseif {$ipv4Found == 0} {
-
-                # -2 means the interface is present but no IPv4 address is present 
-                return -2
-        } else {
-
-                # the interface is present and IPv4 address is also assigned
+        set ret [returnValue $InterfaceFound $ipv4Found]
+        if {$ret == 1} {
                 return $ip
+        } else {
+                return $ret
         }
+
 }
 
 #Procedure to find ipv4 address in linux
@@ -98,6 +93,18 @@ proc InterfaceToIPv4AddressLinux {name} {
                         set InterfaceFound 1
                 }
         }
+
+        set ret [returnValue $InterfaceFound $ipv4Found]
+        if {$ret == 1} {
+                return $ip
+        } else {
+                return $ret
+        }
+        
+}
+
+proc returnValue {InterfaceFound ipv4Found} {
+
         if { $InterfaceFound == 0} {
 
                 # -1 means interface with the given name is not present
@@ -109,10 +116,9 @@ proc InterfaceToIPv4AddressLinux {name} {
         } else {
 
                 # the interface is present and IPv4 address is also assigned
-                return $ip
+                return 1
         }
 }
-
 set ostype $tcl_platform(os)
 if {$argc == 0} {
         # If number of command line argument is 0, the print ip addresses of available interfaces
