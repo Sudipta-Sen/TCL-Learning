@@ -1,9 +1,6 @@
-
-#puts "$tcl_platform(os)"
-#foreach number [array name tcl_platform] {
-#    puts "tcl_platform($number) = $tcl_platform($number)"
-#}
+#Procedure to find ipv4 address in windows
 proc InterfaceToIPv4AddressWindows {name} {
+
         set InterfaceFound 0
         set ipv4Found 0
         set reg1 [string map {* .} $name]
@@ -50,17 +47,23 @@ proc InterfaceToIPv4AddressWindows {name} {
                 }
         }
         if { $InterfaceFound == 0} {
+
                 # -1 means interface with the given name is not present
                 return -1
         } elseif {$ipv4Found == 0} {
+
                 # -2 means the interface is present but no IPv4 address is present 
                 return -2
         } else {
+
                 # the interface is present and IPv4 address is also assigned
                 return $ip
         }
 }
+
+#Procedure to find ipv4 address in linux
 proc InterfaceToIPv4AddressLinux {name} {
+
         set InterfaceFound 0
         set ipv4Found 0
 
@@ -70,7 +73,7 @@ proc InterfaceToIPv4AddressLinux {name} {
 
                 #This if block is executed only after the given interface is found
                 if {$InterfaceFound == 1} {
-                        #puts $line
+
                         #Find the line with IPv4 address
                         if {[regexp "inet " $line] == 1} {
 
@@ -82,11 +85,13 @@ proc InterfaceToIPv4AddressLinux {name} {
                                 break
                         }
                         if {[regexp "^ " $line] == 0} {
+
                                 #break the loop when details of another interafce appears
                                 break
                         }
                 }
                 if {[regexp $reg $line] == 1} {
+
                         regexp $name $line ma
                         #puts "$line ==== $ma"
                         #When the interface name is found, set InterfaceFound variable to true i.e 1
@@ -94,12 +99,15 @@ proc InterfaceToIPv4AddressLinux {name} {
                 }
         }
         if { $InterfaceFound == 0} {
+
                 # -1 means interface with the given name is not present
                 return -1
         } elseif {$ipv4Found == 0} {
+
                 # -2 means the interface is present but no IPv4 address is present 
                 return -2
         } else {
+
                 # the interface is present and IPv4 address is also assigned
                 return $ip
         }
@@ -164,6 +172,3 @@ if {$argc == 0} {
         # If more than one argument is passed then print a error message
         puts "Invalid Number of arguments"
 }
-
-
-#puts [InterfaceToIPv4Address eth6]
