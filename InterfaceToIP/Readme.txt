@@ -1,5 +1,6 @@
-This is a program to get ip address from a interface name in both linux and windows. This program 
-contains three methods - 
+This is a program to get ip address from a interface name in both linux and windows. This program takes 
+interface name as an command line argument, if no argument is passed then it prints ip of all available 
+interfaces. This program contains three methods - 
 
 1) InterfaceToIPv4AddressWindows - Provide ip address of given interface in windows
     Return value:
