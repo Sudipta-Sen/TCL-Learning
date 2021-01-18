@@ -1,10 +1,10 @@
 #Procedure to find ipv4 address in windows
-proc InterfaceToIPv4AddressWindows {name} {
+proc InterfaceToIPv4AddressWindows {interafceName} {
 
         set InterfaceFound 0
         set ipv4Found 0
-        set reg1 [string map {* .} $name]
-        append reg $reg1 ":"
+        set interafceName [string map {* .} $interafceName]
+        append interafceName ":"
 
         # Iterate through the output of the command ipconfig /all
         foreach Tline [split [exec ipconfig /all] "\n"] {
@@ -39,7 +39,7 @@ proc InterfaceToIPv4AddressWindows {name} {
                         }
                 }
                 
-                if {[regexp $reg $line] == 1} {
+                if {[regexp $interafceName $line] == 1} {
 
                         #When the interface name is found, set InterfaceFound variable to true i.e 1
                         set InterfaceFound 1
@@ -57,12 +57,12 @@ proc InterfaceToIPv4AddressWindows {name} {
 }
 
 #Procedure to find ipv4 address in linux
-proc InterfaceToIPv4AddressLinux {name} {
+proc InterfaceToIPv4AddressLinux {interafceName} {
 
         set InterfaceFound 0
         set ipv4Found 0
 
-        append reg $name ":"
+        append interafceName ":"
         # Iterate through the output of the command ifconfig -a
         foreach line [split [exec ifconfig -a] "\n"] {
 
@@ -85,10 +85,8 @@ proc InterfaceToIPv4AddressLinux {name} {
                                 break
                         }
                 }
-                if {[regexp $reg $line] == 1} {
+                if {[regexp $interafceName $line] == 1} {
 
-                        regexp $name $line ma
-                        #puts "$line ==== $ma"
                         #When the interface name is found, set InterfaceFound variable to true i.e 1
                         set InterfaceFound 1
                 }
