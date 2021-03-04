@@ -133,7 +133,12 @@ if { [lindex $argv 0] == 2} {
         set fp [open $filename w]
         createWLANProfile $fp $SSID $Authentication $Password
         close $fp
-        AddToProfile $filename $interface
+        set ret [AddToProfile $filename $interface]
+        if { $ret != 1 } {
+            puts $ret
+        } else {
+            puts "Wireless network is added to the profile"
+        }
         file delete $filename
     }
 } elseif { [lindex $argv 0] == 1} {
@@ -143,7 +148,7 @@ if { [lindex $argv 0] == 2} {
     } else {
         set SSID [lindex $argv 1]
         set ret [ConnectToWiFi $SSID]
-        if { ret != 1 } {
+        if { $ret != 1 } {
             puts $ret
         } else {
             puts "Connect with $SSID successfully"
